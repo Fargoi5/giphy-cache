@@ -119,6 +119,8 @@ export class GifsSearchWithRelevancy extends GifsSearch {
  * Example: http://localhost:9926/GifById/AcfTF7tyikWyroP0x7
  * pattern: /GifById/${id}
  * id: the id of the giphy record
+ *
+ * Returns: Gif record
  */
 export class GifById extends Resource {
 
@@ -207,6 +209,12 @@ export class GifById extends Resource {
     return await fetchRecords('GifCounter', 'gif_id', gifId, ["*"])
   }
 
+  /**
+   * Increments the GifCounter record for the provided gifId
+   * Uses upsert, so will update/create the record
+   * @param gifId
+   * @returns {Promise<void>}
+   */
   async incrementGifCounter(gifId) {
 
     const gifCounter = await this.getGifCounter(gifId);
@@ -235,6 +243,10 @@ export class GifById extends Resource {
   }
 }
 
+/**
+ * GifRankings returns the Gif Rankings
+ *  - ordered from most read to least read.
+ */
 export class GifRankings extends Resource {
   async get(_context) {
 
