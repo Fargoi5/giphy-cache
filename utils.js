@@ -25,20 +25,6 @@ export const fetchAllRecords = async (tableName, getAttributes = []) => {
 
   return postToDatabase(`POST SQL Query ${query}`, body);
 
-  // const response = await fetch(harperDbUrl, {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     Authorization: authHeader,
-  //   },
-  //   body: JSON.stringify(body),
-  // });
-  //
-  // if (!response.ok) {
-  //   throw new Error(`Error fetching all records from ${tableName}: ${response.statusText}`);
-  // }
-  //
-  // return response.json();
 };
 
 export const cacheSearchResult = async (tableName, searchTerm, gifs) => {
