@@ -1,15 +1,28 @@
-# HarperDB Application Template
+## Giphy Cache API 
 
-This is a template for building [HarperDB](https://www.harperdb.io/) applications. You can download this repository as a starting point for building applications with HarperDB. To get started, make sure you have [installed HarperDB](https://docs.harperdb.io/docs/install-harperdb), which can be quickly done with `npm install -g harperdb`. You can run your application from the directory where you downloaded the contents of this repository with:
+#### The purpose of this API is to enable search and selection of giphys
+Core features:
+1. Caching of giphy search results in HarperDb -> removes repeated requests and improves performance 
+2. Caching of individual selected giphy records -> removes repeated requests and improves performance
+3. Relevancy ranking is enabled by addition of a counter for selected giphy records -> can be used to improve search results
+4. Giphy Search sorted by relevancy ranking added -> lists gifs in order of popularity
 
-`harperdb run /path/to/your-app`
+Run the application locally with
+```
+harperdb dev .
+```
 
-(or if you enter that directory, you can run the current directory as `harperdb run .`).
+The tables are defined in schema.graphql 
 
-For more information about getting started with HarperDB and building applications, see our getting started guide.
+GifSearchCache - Contains the search results of previous queries for efficient retrieval
+GifCache - Contains any giphy that was individually called
+GifCounter - Records contain the count of how many times the Gif was selected
 
-This template includes the [default configuration](./config.yaml), which specifies how files are handled in your application.
+### Searching for Gifs matching a Search Term
+There is a custom endpoint `/GifsSearch` defined in resources.js 
+that allows search to an external resource to retrieve a list of gifs that match the search term.
 
-The [schema.graphql](./schema.graphql) is the schema definition. This is the main starting point for defining your database schema, specifying which tables you want and what attributes/fields they should have.
+REST API call to `/GifsSearch/{searchTerm}`:
 
-The [resources.js](./resources.js) provides a template for defining JavaScript resource classes, for customized application logic in your endpoints.
+![resources/GifSearch.png](resources/gifSearch.png)
+

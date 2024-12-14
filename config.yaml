@@ -13,3 +13,5 @@ static: # This allows static files to be directly accessible
   files: web/**
 roles: # This can define the roles that are used in the application
   files: roles.yaml
+logging:
+  level: info
