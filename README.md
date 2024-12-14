@@ -2,14 +2,22 @@
 
 #### The purpose of this API is to enable search and selection of giphys
 Core features:
-1. Caching of giphy search results in HarperDb -> removes repeated requests and improves performance 
+1. Caching of giphy search results in HarperDB -> removes repeated requests and improves performance 
 2. Caching of individual selected giphy records -> removes repeated requests and improves performance
 3. Relevancy ranking is enabled by addition of a counter for read giphy records -> used to improve search results
 4. Giphy Search sorted by relevancy ranking added -> lists gifs in order of popularity
-
-##### SETUP  
+###
+##### SETUP
 Create the .env file at the root of the project, based on the example.env
 In the .env file, make sure to update the Giphy API Key and the database password
+
+Install and run HarperDB  
+https://docs.harperdb.io/docs/getting-started#installing-a-harperdb-instance
+
+Install dependencies (from root of project) 
+```
+npm install
+```
 
 Run the application locally with
 ```

@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Validate environment variables
 const GIPHY_API_KEY = process.env.GIPHY_API_KEY;
 const GIPHY_SEARCH_URL_PATH = process.env.GIPHY_SEARCH_URL_PATH;
 const GIPHY_GET_BY_ID_URL_PATH = process.env.GIPHY_GET_BY_ID_URL_PATH;
@@ -74,6 +73,14 @@ export class GifsSearch extends Resource {
   }
 }
 
+/**
+ * Class for extending 'fetching Gifs by query' to include relevancy
+ * Example: http://localhost:9926/GifsSearch/dog
+ * pattern: /GifsSearchWithRelevancy/searchTerm
+ * searchTerm: The search expression used to find gifs
+ *
+ * Returns List of Gifs sorted with relevancy (based on read count)
+ */
 export class GifsSearchWithRelevancy extends GifsSearch {
   async get(query) {
 
@@ -85,7 +92,7 @@ export class GifsSearchWithRelevancy extends GifsSearch {
       return;
     }
 
-    const {order} = query;
+    const { order } = query;
 
     const gifCounters = await fetchAllRecords('GifCounter');
 
