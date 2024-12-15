@@ -1,22 +1,17 @@
-/** Here we can define any JavaScript-based resources and extensions to tables
+import { GifsSearch } from "./dataResources/gifsSearch.js";
+import { GifById } from './dataResources/gifById.js';
 
-export class MyCustomResource extends tables.TableName {
-	// we can define our own custom POST handler
-	post(content) {
-		// do something with the incoming content;
-		return super.post(content);
-	}
-	// or custom GET handler
-	get() {
-		// we can modify this resource before returning
-		return super.get();
-	}
-}
- */
-// we can also define a custom resource without a specific table
-export class Greeting extends Resource {
-	// a "Hello, world!" handler
-	get() {
-		return { greeting: 'Hello, world!' };
-	}
-}
+// export data resources
+export { GifsSearch } from './dataResources/gifsSearch.js';
+export { GifsSearchWithRelevancy } from './dataResources/gifsSearchWithRelevancy.js';
+export { GifById } from './dataResources/gifById.js';
+export { GifRankings } from './dataResources/gifRankings.js';
+
+// export resources
+// Register the sources with expiration
+const { GifSearchCache, GifCache } = tables;
+// Caching Searches, keeps the table query result in memory (for 6 minutes)
+GifSearchCache.sourcedFrom(GifsSearch, { expiration: 360000 });
+
+// Caching Search by ID Queries
+GifCache.sourcedFrom(GifById, { expiration: 360000 });

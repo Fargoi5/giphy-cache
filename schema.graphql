@@ -1,7 +1,64 @@
 ## Here we can define any tables in our database. This example shows how we define a type as a table using
 ## the type name as the table name and specifying it is an "export" available in the REST and other external protocols.
-type TableName @table @export {
-    id: ID @primaryKey # Here we define primary key (must be one)
-    name: String # we can define any other attributes here
-    tag: String @indexed # we can specify any attributes that should be indexed
+directive @table(expiration: Int, schema: String) on OBJECT
+directive @export on OBJECT
+directive @primaryKey on FIELD_DEFINITION
+directive @indexed on FIELD_DEFINITION
+
+# The expiration here means that table records will be cleared after 1 hour (meaning this is a cache store)
+type GifSearchCache @table(expiration: 3600) @export {
+    id: ID @primaryKey
+    searchTerm: String @indexed
+}
+
+# Will clear entries in 72 hours
+type GifCache @table(expiration: 259200) @export {
+    id: ID @primaryKey
+    type: String @indexed
+    title: String @indexed
+    url: String
+    images: Images
+}
+
+type GifCounter @table @export {
+    id: ID @primaryKey
+    gif_id: ID @indexed
+    counter: Int @indexed
+}
+
+type Images {
+    original: ImageDetails
+    downsized: ImageDetails
+    downsizedLarge: ImageDetails
+    downsizedMedium: ImageDetails
+    downsizedSmall: ImageDetailsSmall
+    downsizedStill: ImageDetails
+    fixedHeight: ImageDetails
+    fixedHeightDownsampled: ImageDetails
+    fixedHeightSmall: ImageDetails
+    fixedHeightSmallStill: ImageDetails
+    fixedHeightStill: ImageDetails
+    fixedWidth: ImageDetails
+    fixedWidthDownsampled: ImageDetails
+    fixedWidthSmall: ImageDetails
+}
+
+type ImageDetails {
+    height: String
+    width: String
+    size: String
+    url: String
+    mp4Size: String
+    mp4: String
+    webpSize: String
+    webp: String
+    frames: String
+    hash: String
+}
+
+type ImageDetailsSmall {
+    height: String
+    width: String
+    mp4Size: String
+    mp4: String
 }

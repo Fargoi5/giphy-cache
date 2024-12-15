@@ -1,6 +1,9 @@
 {
-  "name": "application-template",
+  "name": "giphy-cache",
   "version": "1.0.0",
-  "description": "A template for building HarperDB applications",
-  "type": "module"
+  "description": "Provides a cache mechanism for commonly called gifs from giphy.com API",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  }
 }
