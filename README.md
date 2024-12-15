@@ -44,7 +44,7 @@ Relevancy is determined by ordering the Gifs by read access count.
 
 REST API GET call to `/GifsSearchWithRelevancy/{searchTerm}`:
 
-![resources/GifSearchWithRelevancy.png](resources/gifSearchWithRelevancy.png)
+![resources/GifSearchWithRelevancy.png](./resources%2FgifSearchWithRelevancy.png)
 
 ### Getting an individual Gif record
 Users can pick a Gif from search results and select that record 
@@ -54,7 +54,7 @@ If the Gif is not in cache, we call the external resource.
 We then add the record to the cache. 
 
 REST API GET call to `/GifById/{gif_id}`:
-![resources/gifById.png](./resources/gifById.png)
+![resources/gifById.png](./resources%2FgifById.png)
 
 ### Gif Rankings
 Rankings are available to view the most popular Gifs
@@ -63,7 +63,7 @@ GifRankings returns the Gif's that have been read in
 order of ranking.
 
 REST API GET call to `/GifRankings`:
-![resources/gifRankings.png](./resources/gifRankings.png)
+![resources/gifRankings.png](./resources%2FgifRankings.png)
 
 
 
