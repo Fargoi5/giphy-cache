@@ -35,9 +35,7 @@ Custom endpoint `/GifsSearch` is defined in resources.js
 that allows search to an external resource to retrieve a list of gifs that match the search term.
 
 REST API GET call to `/GifsSearch/{searchTerm}`:
-
-![resources/GifSearch.png](resources/gifSearch.png)
-
+![GifSearch.png](./resources%2FGifSearch.png)
 ### Adding Relevancy Ranking to Searching for Gifs matching a search term
 Custom endpoint `/GifsSearchWithRelevancy` is defined in resources.js
 that allows search to an external resource to retrieve a list of gifs that match the search term.
@@ -56,7 +54,7 @@ If the Gif is not in cache, we call the external resource.
 We then add the record to the cache. 
 
 REST API GET call to `/GifById/{gif_id}`:
-![resources/gifById.png](resources/gifById.png)
+![resources/gifById.png](./resources/gifById.png)
 
 ### Gif Rankings
 Rankings are available to view the most popular Gifs
@@ -65,7 +63,7 @@ GifRankings returns the Gif's that have been read in
 order of ranking.
 
 REST API GET call to `/GifRankings`:
-![resources/gifRankings.png](resources/gifRankings.png)
+![resources/gifRankings.png](./resources/gifRankings.png)
 
 
 
