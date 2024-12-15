@@ -2,15 +2,34 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const HARPERDB_USERNAME = process.env.HARPERDB_USERNAME;
-const HARPERDB_PASSWORD = process.env.HARPERDB_PASSWORD;
+export const getConfig = () => {
 
-if (!HARPERDB_USERNAME || !HARPERDB_PASSWORD) {
-  throw new Error('Missing database environment variables.');
+  const GIPHY_API_KEY = process.env.GIPHY_API_KEY;
+  const GIPHY_SEARCH_URL_PATH = process.env.GIPHY_SEARCH_URL_PATH;
+  const GIPHY_GET_BY_ID_URL_PATH = process.env.GIPHY_GET_BY_ID_URL_PATH;
+  const GIPHY_SEARCH_LIMIT = process.env.GIPHY_SEARCH_LIMIT;
+  const HARPERDB_USERNAME = process.env.HARPERDB_USERNAME;
+  const HARPERDB_PASSWORD = process.env.HARPERDB_PASSWORD;
+
+  if (!GIPHY_API_KEY || !GIPHY_SEARCH_URL_PATH || !GIPHY_GET_BY_ID_URL_PATH || !GIPHY_SEARCH_LIMIT) {
+    throw new Error('Missing required environment variables.');
+  }
+
+  if (!HARPERDB_USERNAME || !HARPERDB_PASSWORD) {
+    throw new Error('Missing database environment variables.');
+  }
+
+  return {
+    GIPHY_API_KEY: process.env.GIPHY_API_KEY,
+    GIPHY_SEARCH_URL_PATH: process.env.GIPHY_SEARCH_URL_PATH,
+    GIPHY_GET_BY_ID_URL_PATH:process.env.GIPHY_GET_BY_ID_URL_PATH,
+    GIPHY_SEARCH_LIMIT: process.env.GIPHY_SEARCH_LIMIT,
+    HARPERDB_USERNAME: process.env.HARPERDB_USERNAME,
+    HARPERDB_PASSWORD: process.env.HARPERDB_PASSWORD,
+    HARPER_DB_URL : `${process.env.HARPERDB_PROTOCOL}://${process.env.HARPERDB_HOST}:${process.env.HARPERDB_PORT}`,
+    AUTH_HEADER: 'Basic ' + Buffer.from(`${HARPERDB_USERNAME}:${HARPERDB_PASSWORD}`).toString('base64')
+  }
 }
-
-const harperDbUrl = `${process.env.HARPERDB_PROTOCOL}://${process.env.HARPERDB_HOST}:${process.env.HARPERDB_PORT}`
-const authHeader = 'Basic ' + Buffer.from(`${HARPERDB_USERNAME}:${HARPERDB_PASSWORD}`).toString('base64');
 
 export const fetchAllRecords = async (tableName, getAttributes = []) => {
   const query = getAttributes.length > 0
@@ -42,12 +61,14 @@ export const cacheSearchResult = async (tableName, searchTerm, gifs) => {
 
 export const postToDatabase = async (description, requestBody) => {
 
+  const config = getConfig();
+
   try {
-    const response = await fetch(harperDbUrl, {
+    const response = await fetch(config.HARPER_DB_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: authHeader,
+        Authorization: config.AUTH_HEADER,
       },
       body: JSON.stringify(requestBody),
     });
