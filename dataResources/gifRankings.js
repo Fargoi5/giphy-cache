@@ -11,6 +11,7 @@ export class GifRankings extends Resource {
     logger.info('Request Received for GifRankings');
 
     const getGifById = async (gifId) => {
+
       const gifByIdResource = new GifById(gifId, false);
 
       logger.debug(`Requesting to get Gif by ID ${gifId}`);
@@ -19,7 +20,6 @@ export class GifRankings extends Resource {
         return gifByIdResource.get();
       } catch (error) {
         logger.error('Error in calling to get Gif By ID:', error);
-        throw new Error(`Failed to fetch Gif by ID: ${error.message}`);
       }
     }
 
@@ -27,16 +27,14 @@ export class GifRankings extends Resource {
 
       const gifCountersResults = await fetchAllRecords('GifCounter');
 
-      logger.info('gifCountersResults: ', gifCountersResults);
-
       const orderedByCount = await Promise.all(
         gifCountersResults
           .sort((a, b) => b.counter - a.counter) // descending sort
           .map(async (gifCounter) => {
             const gifRecord = await getGifById(gifCounter.gif_id);
             const gifRanking = { ...gifCounter };
-            if (gifRecord && gifRecord.url) {
-              gifRanking.url = gifRecord.url;
+            if (gifRecord && gifRecord?.images?.downsized_medium?.url) {
+              gifRanking.url = gifRecord.images.downsized_medium.url;
             }
             return gifRanking;
           })

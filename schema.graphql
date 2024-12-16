@@ -5,25 +5,13 @@ directive @export on OBJECT
 directive @primaryKey on FIELD_DEFINITION
 directive @indexed on FIELD_DEFINITION
 
-# The expiration here means that table records will be cleared after 1 hour (meaning this is a cache store)
-type GifSearchCache @table(expiration: 3600) @export {
-    id: ID @primaryKey
-    searchTerm: String @indexed
-}
 
-# Will clear entries in 72 hours
-type GifCache @table(expiration: 259200) @export {
-    id: ID @primaryKey
+type Gif {
     type: String @indexed
     title: String @indexed
     url: String
+    embed_url: String
     images: Images
-}
-
-type GifCounter @table @export {
-    id: ID @primaryKey
-    gif_id: ID @indexed
-    counter: Int @indexed
 }
 
 type Images {
@@ -61,4 +49,25 @@ type ImageDetailsSmall {
     width: String
     mp4Size: String
     mp4: String
+}
+
+# The expiration here means that table records will be cleared after 1 hour (meaning this is a cache store)
+type GifSearchCache @table(expiration: 3600) @export {
+    id: ID @primaryKey
+    searchTerm: String @indexed
+    cacheValue: [Gif]
+}
+
+# Will clear entries in 72 hours
+type GifCache @table(expiration: 259200) @export {
+    id: ID @primaryKey
+    searchTerm: String @indexed
+    cacheValue: [Gif]
+}
+
+type GifCounter @table @export {
+    id: ID @primaryKey
+    gif_id: ID @indexed
+    title: String
+    counter: Int @indexed
 }

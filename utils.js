@@ -46,13 +46,13 @@ export const fetchAllRecords = async (tableName, getAttributes = []) => {
 
 };
 
-export const cacheSearchResult = async (tableName, searchTerm, gifs) => {
+export const cacheSearchResult = async (tableName, searchTerm, cacheValue) => {
   const requestBody = {
     operation: 'insert',
     table: tableName,
     records: [{
       searchTerm,
-      gifs,
+      cacheValue,
     }]
   };
 

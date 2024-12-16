@@ -1,4 +1,4 @@
-import { postToDatabase, getConfig } from '../utils.js'
+import {postToDatabase, getConfig, cacheSearchResult, getCacheResult} from '../utils.js'
 
 /**
  * Class for fetching a single Gif by ID
@@ -27,23 +27,30 @@ export class GifById extends Resource {
 
     logger.info(`Received Request to get Gif by id: ${gifId}`);
 
+    if (this.external) {
+      await this.incrementGifCounter(gifId);
+    }
+
     const giphyGetUrl = `https://${config.GIPHY_GET_BY_ID_URL_PATH}${gifId}?api_key=${config.GIPHY_API_KEY}`;
+
+    const cacheResponse = await getCacheResult('GifCache', gifId);
+
+    if (cacheResponse && cacheResponse.length > 0 && cacheResponse[0].cacheValue && cacheResponse[0].cacheValue.length > 0) {
+      logger.info(`Found cache results for ${gifId}, returning cached gif`);
+      return cacheResponse[0].cacheValue[0]; // Return first Gif
+    }
 
     try {
       const response = await fetch(giphyGetUrl);
 
       if (!response.ok) {
-        throw new Error(`GifByID Giphy API error: ${response.statusText}`);
+        logger.error("GifByID Giphy API error: ${response.statusText}")
+        return null;
       }
 
       const data = await response.json();
 
-      if (this.external) {
-        logger.info("Internal Request");
-        await this.incrementGifCounter(gifId);
-      } else {
-        logger.info("External Request");
-      }
+      await cacheSearchResult('GifCache', gifId, [data.data]);
 
       return data.data || null;
     } catch (error) {
