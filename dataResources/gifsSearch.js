@@ -23,9 +23,9 @@ export class GifsSearch extends Resource {
 
     const cacheResponse = await getCacheResult('GifSearchCache', query.url);
 
-    if (cacheResponse && cacheResponse.length > 0 && cacheResponse[0].gifs && cacheResponse[0].gifs.length > 0) {
-      logger.info(`Found cache results for ${query.url}, returning ${cacheResponse[0].gifs.length} cached gifs`);
-      return cacheResponse[0].gifs;
+    if (cacheResponse && cacheResponse.length > 0 && cacheResponse[0].cacheValue && cacheResponse[0].cacheValue.length > 0) {
+      logger.info(`Found cache results for ${query.url}, returning ${cacheResponse[0].cacheValue.length} cached gifs`);
+      return cacheResponse[0].cacheValue;
     }
 
     logger.info("No cached gifs found, calling external datasource");
@@ -44,7 +44,7 @@ export class GifsSearch extends Resource {
       // Picking only relevant fields to reduce response size
       const gifsArr = json.data.map(record => ({
         id: record.id,
-        url: record.url,
+        url: record.images.downsized_medium.url,
         title: record.title
       }));
 
